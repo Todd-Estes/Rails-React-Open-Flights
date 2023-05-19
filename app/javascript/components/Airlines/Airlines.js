@@ -1,18 +1,33 @@
-import  React { useState, UseEffect } from 'react'
+import  React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const Airlines = () => {
 
-  const [airlines, setArilines] = useState([])
+  const [airlines, setAirlines] = useState([])
 
   useEffect(() => {
     // Get airlines from api
     // Update airlines in our state
-  }
-  )
+    axios.get('api/v1/airlines.json')
+    .then(response => {
+      setAirlines(response.data.data)
+    })
+    .catch(response => console.log(response))
+    }, [airlines.length])
+
+    const list = airlines.map( item => {
+      return (<li key={item.attributes.name}>{item.attributes.name}</li>)
+    })
   return (
-    <p>
-      this is the airlines#index view for our app
-    </p>
+    <div className="home">
+      <div className="header">
+        <h1>Open Flights</h1>
+        <div className="subheader">Honest, unbiased airline reviews</div>
+      </div>
+      <div className="grid">
+        <ul>{list}</ul>
+      </div>
+    </div>
   )
 }
 
